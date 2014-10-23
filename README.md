@@ -1,4 +1,4 @@
-# Virtical Calendar Didget
+# Virtical Calendar Widget
 Made for [Übersicht](http://tracesof.net/uebersicht/)
 
 ![the widget in action]
