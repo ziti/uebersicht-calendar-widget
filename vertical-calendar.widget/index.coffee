@@ -92,7 +92,7 @@ update: (output, domEl) ->
     aid = ((theDate.getMonth()+1) + "-" + theDate.getDate() + "-15")
 
     dom.find('#'+(theDate.getMonth() + "-" + theDate.getDate())).click ->
-        openCal("/Library/Application\ Support/Übersicht/widgets/openCalendar.scpt #{aid}",(error, output) ->
+        openCal("/Library/Application\ Support/Übersicht/widgets/vertical-calendar.widget/openCalendar.scpt #{aid}",(error, output) ->
           console.log(error)
           )
 
