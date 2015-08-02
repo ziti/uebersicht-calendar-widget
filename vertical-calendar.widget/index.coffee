@@ -1,5 +1,6 @@
 command: ""
 
+
 # the refresh frequency in milliseconds
 refreshFrequency: 60000
 
@@ -55,7 +56,7 @@ render: (output) -> """
 
 
 update: (output, domEl) ->
-
+  openCal = @run
   today = new Date((new Date()).toLocaleDateString())
 
   if this.currentDate != null && this.currentDate == today
@@ -72,13 +73,14 @@ update: (output, domEl) ->
   dom = $(domEl)
   dom.find('.output').empty()
 
+
   showDate = (date) ->
     theDate = new Date(startDate)
     theDate.setDate(theDate.getDate() + date)
     dateString = if theDate.getDate() < 10 then '0' + theDate.getDate() else theDate.getDate()
 
     dateDiv = $('<div class="date"></div>')
-    dateDiv.append('<div class="dayDisplay">' + dateString + ' • ' + d_names[theDate.getDay()] + '</div>')
+    dateDiv.append('<div class="dayDisplay"><a class="datelink" id="' + (theDate.getMonth() + "-" + theDate.getDate()) + '">' + dateString + ' • ' + d_names[theDate.getDay()] + '</a></div>')
 
     if theDate.toLocaleDateString() == startDate.toLocaleDateString() or theDate.getDate() == 1
       dateDiv.append('<div class="monthDisplay">' + m_names[theDate.getMonth()] + ' ' + theDate.getFullYear() + '</div>')
@@ -87,6 +89,15 @@ update: (output, domEl) ->
       dateDiv.addClass("today")
 
     dom.find('.output').append(dateDiv)
+    aid = ((theDate.getMonth()+1) + "-" + theDate.getDate() + "-15")
+
+    dom.find('#'+(theDate.getMonth() + "-" + theDate.getDate())).click ->
+        openCal("/Library/Application\ Support/Übersicht/widgets/openCalendar.scpt #{aid}",(error, output) ->
+          console.log(error)
+          )
+
+
+
 
     if date < 30
         spacer = $('<div class="spacer"></div>')
@@ -95,7 +106,6 @@ update: (output, domEl) ->
         dom.find('.output').append(spacer)
 
 
+
   showDate date for date in [0..30]
-
   #dom.find('.output').html dates.join(", ")
-
