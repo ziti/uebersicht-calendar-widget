@@ -73,14 +73,14 @@ update: (output, domEl) ->
   dom = $(domEl)
   dom.find('.output').empty()
 
-
   showDate = (date) ->
     theDate = new Date(startDate)
     theDate.setDate(theDate.getDate() + date)
     dateString = if theDate.getDate() < 10 then '0' + theDate.getDate() else theDate.getDate()
+    aid = ((theDate.getMonth()+1) + "-" + theDate.getDate() + "-" + theDate.getFullYear())
 
     dateDiv = $('<div class="date"></div>')
-    dateDiv.append('<div class="dayDisplay"><a class="datelink" id="' + (theDate.getMonth() + "-" + theDate.getDate()) + '">' + dateString + ' • ' + d_names[theDate.getDay()] + '</a></div>')
+    dateDiv.append('<div class="dayDisplay" data-date="' +theDate + '" id="' + aid + '">' + dateString + ' • ' + d_names[theDate.getDay()] + '</div>')
 
     if theDate.toLocaleDateString() == startDate.toLocaleDateString() or theDate.getDate() == 1
       dateDiv.append('<div class="monthDisplay">' + m_names[theDate.getMonth()] + ' ' + theDate.getFullYear() + '</div>')
@@ -89,15 +89,11 @@ update: (output, domEl) ->
       dateDiv.addClass("today")
 
     dom.find('.output').append(dateDiv)
-    aid = ((theDate.getMonth()+1) + "-" + theDate.getDate() + "-15")
 
-    dom.find('#'+(theDate.getMonth() + "-" + theDate.getDate())).click ->
-        openCal("/Library/Application\ Support/Übersicht/widgets/vertical-calendar.widget/openCalendar.scpt #{aid}",(error, output) ->
+    dom.find('#' + aid).click ->
+        openCal("./vertical-calendar.widget/openCalendar.scpt #{aid}",(error, output) ->
           console.log(error)
           )
-
-
-
 
     if date < 30
         spacer = $('<div class="spacer"></div>')
@@ -106,6 +102,4 @@ update: (output, domEl) ->
         dom.find('.output').append(spacer)
 
 
-
   showDate date for date in [0..30]
-  #dom.find('.output').html dates.join(", ")
